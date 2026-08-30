@@ -1,16 +1,27 @@
+import os
 import pandas as pd
 import joblib
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    classification_report
+)
 
-from imblearn.over_sampling import SMOTE
 
+# --------------------------------------------------
+# Paths
+# --------------------------------------------------
 
 DATA_PATH = "fe_outcomes2.csv"
-MODEL_PATH = "models/random_forest_smote.pkl"
+MODEL_PATH = "models/random_forest_balanced.pkl"
 
+
+# --------------------------------------------------
+# Features
+# --------------------------------------------------
 
 FEATURES = [
     "founded_at",
@@ -25,6 +36,7 @@ FEATURES = [
     "founded_at_year",
     "first_funding_at_year",
     "first_milestone_at_year",
+
     "category_code_reduced_Other",
     "category_code_reduced_advertising",
     "category_code_reduced_biotech",
@@ -36,6 +48,7 @@ FEATURES = [
     "category_code_reduced_other",
     "category_code_reduced_software",
     "category_code_reduced_web",
+
     "country_code_reduced_AUS",
     "country_code_reduced_CAN",
     "country_code_reduced_DEU",
@@ -50,8 +63,13 @@ FEATURES = [
 ]
 
 
+# --------------------------------------------------
+# Main training function
+# --------------------------------------------------
+
 def main():
 
+    # Load dataset
     print("Loading dataset...")
 
     df = pd.read_csv(
@@ -61,28 +79,57 @@ def main():
 
     print("Original dataset:", df.shape)
 
-    # Convert encoded status into four classes
+
+    # --------------------------------------------------
+    # Create target classes
+    # --------------------------------------------------
+
+    # Original status values:
+    # 0.0, 0.333333, 0.666667, 1.0
+    #
+    # Convert them into:
+    # 0, 1, 2, 3
+
     df["status_class"] = (
         df["status"] * 3
     ).round().astype(int)
 
+
+    # --------------------------------------------------
     # Remove duplicate rows
+    # --------------------------------------------------
+
     df = df.drop_duplicates()
 
-    print("After removing duplicates:", df.shape)
+    print(
+        "After removing duplicates:",
+        df.shape
+    )
 
-    # Keep only features that exist
+
+    # --------------------------------------------------
+    # Select features
+    # --------------------------------------------------
+
     features = [
-        col for col in FEATURES
+        col
+        for col in FEATURES
         if col in df.columns
     ]
 
     X = df[features].copy()
     y = df["status_class"].copy()
 
-    print("Number of features:", len(features))
+    print(
+        "Number of features:",
+        len(features)
+    )
 
-    # Train/test split
+
+    # --------------------------------------------------
+    # Train / Test split
+    # --------------------------------------------------
+
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -91,39 +138,51 @@ def main():
         stratify=y
     )
 
-    print("Training rows:", len(X_train))
-    print("Testing rows:", len(X_test))
-
-    # Handle class imbalance
-    print("Applying SMOTE...")
-
-    smote = SMOTE(random_state=42)
-
-    X_train_smote, y_train_smote = smote.fit_resample(
-        X_train,
-        y_train
+    print(
+        "Training rows:",
+        len(X_train)
     )
 
-    print("SMOTE training rows:", len(X_train_smote))
+    print(
+        "Testing rows:",
+        len(X_test)
+    )
 
-    # Train Random Forest
-    print("Training Random Forest...")
+
+    # --------------------------------------------------
+    # Random Forest with class weighting
+    # --------------------------------------------------
+
+    print(
+        "Training Random Forest with class weights..."
+    )
 
     model = RandomForestClassifier(
-        n_estimators=200,
+        n_estimators=100,
+        max_depth=15,
+        min_samples_leaf=2,
+        class_weight="balanced",
         random_state=42,
         n_jobs=2
     )
 
     model.fit(
-        X_train_smote,
-        y_train_smote
+        X_train,
+        y_train
     )
 
+
+    # --------------------------------------------------
     # Predictions
+    # --------------------------------------------------
+
     predictions = model.predict(X_test)
 
+
+    # --------------------------------------------------
     # Evaluation
+    # --------------------------------------------------
+
     accuracy = accuracy_score(
         y_test,
         predictions
@@ -136,10 +195,20 @@ def main():
         zero_division=0
     )
 
+
     print("\nModel Performance")
     print("-----------------")
-    print("Accuracy:", round(accuracy, 4))
-    print("Macro F1:", round(macro_f1, 4))
+
+    print(
+        "Accuracy:",
+        round(accuracy, 4)
+    )
+
+    print(
+        "Macro F1:",
+        round(macro_f1, 4)
+    )
+
 
     print("\nClassification Report")
     print("---------------------")
@@ -152,18 +221,30 @@ def main():
         )
     )
 
-    # Save model
-    import os
 
-    os.makedirs("models", exist_ok=True)
+    # --------------------------------------------------
+    # Save model
+    # --------------------------------------------------
+
+    os.makedirs(
+        "models",
+        exist_ok=True
+    )
 
     joblib.dump(
         model,
         MODEL_PATH
     )
 
-    print("Model saved to:", MODEL_PATH)
+    print(
+        "\nModel saved to:",
+        MODEL_PATH
+    )
 
+
+# --------------------------------------------------
+# Run program
+# --------------------------------------------------
 
 if __name__ == "__main__":
     main()
