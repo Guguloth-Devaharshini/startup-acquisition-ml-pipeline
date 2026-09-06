@@ -1,0 +1,18 @@
+# --------------------------------------------------
+# Home page
+# --------------------------------------------------
+
+@app.route("/")
+def home():
+
+    if model is None:
+        return render_template(
+            "error.html",
+            error="Model is not loaded."
+        )
+
+    return render_template(
+        "index.html",
+        features=FEATURES,
+        metadata=model_metadata
+    )

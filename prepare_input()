@@ -1,0 +1,95 @@
+def prepare_input(data):
+    """
+    Convert incoming data into the exact 34-feature
+    DataFrame expected by the trained Random Forest.
+    """
+
+    if isinstance(data, dict):
+        df = pd.DataFrame([data])
+
+    elif isinstance(data, list):
+        df = pd.DataFrame(data)
+
+    else:
+        raise ValueError(
+            "Input must be a dictionary or list."
+        )
+
+    # Check whether input exists
+    if df.empty:
+        raise ValueError(
+            "No startup information was provided."
+        )
+
+    # Convert empty strings to missing values
+    df = df.replace(
+        r"^\s*$",
+        pd.NA,
+        regex=True
+    )
+
+    # Required user-entered fields
+    important_fields = [
+        "funding_rounds",
+        "funding_total_usd",
+        "milestones",
+        "relationships",
+        "lat",
+        "lng",
+        "founded_at_year",
+        "first_funding_at_year",
+        "first_milestone_at_year"
+    ]
+
+    # Check required fields
+    missing_fields = []
+
+    for field in important_fields:
+
+        if field not in df.columns:
+            missing_fields.append(field)
+
+        elif df[field].isna().all():
+            missing_fields.append(field)
+
+    if missing_fields:
+        raise ValueError(
+            "Please complete the required startup information: "
+            + ", ".join(missing_fields)
+        )
+
+    # Add model features that aren't directly supplied
+    for feature in FEATURES:
+
+        if feature not in df.columns:
+            df[feature] = 0
+
+    # Exact training order
+    df = df[FEATURES].copy()
+
+    # Convert values to numbers
+    for column in FEATURES:
+
+        df[column] = pd.to_numeric(
+            df[column],
+            errors="coerce"
+        )
+
+    # Check invalid required fields
+    invalid_fields = []
+
+    for field in important_fields:
+
+        if df[field].isna().any():
+            invalid_fields.append(field)
+
+    if invalid_fields:
+        raise ValueError(
+            "Invalid or missing values in: "
+            + ", ".join(invalid_fields)
+        )
+
+    # Optional encoded fields can remain zero
+    df = df.fillna(0)
+
+    return df
