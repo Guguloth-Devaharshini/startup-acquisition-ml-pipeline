@@ -1,303 +1,1355 @@
 {% extends "base.html" %}
 
-{% block title %}ML Pipeline - Home{% endblock %}
+{% block title %}StartupPredict AI - Home{% endblock %}
 
 {% block content %}
+
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+
 <div class="startup-hero">
     <div class="row">
         <div class="col-12">
+
+            <div class="hero-badge">
+                <i class="fas fa-brain me-2"></i>
+                Machine Learning Powered
+            </div>
+
             <h1 class="hero-title">
                 <i class="fas fa-rocket me-3"></i>
                 StartupPredict
             </h1>
+
             <p class="hero-subtitle">
                 Startup Exit Prediction Platform
             </p>
-            <p class="text-muted mt-3">
-                Predict whether your startup will achieve IPO success, get acquired, or face different exit scenarios using advanced machine learning
+
+            <p class="text-muted mt-3 hero-description">
+                Analyze startup characteristics and predict the most likely
+                business outcome using a trained Random Forest machine learning model.
             </p>
+
         </div>
     </div>
 </div>
 
+
+<!-- =========================================================
+     MODEL METRICS
+========================================================= -->
+
 <div class="startup-metrics">
+
     <div class="metric-card">
+
         <div class="startup-icon icon-startup">
             <i class="fas fa-chart-line text-white"></i>
         </div>
-        <div class="metric-value">97.8%</div>
-        <div class="metric-label">Exit Prediction Accuracy</div>
+
+        <div class="metric-value">87.3%</div>
+
+        <div class="metric-label">
+            Model Accuracy
+        </div>
+
     </div>
+
+
     <div class="metric-card">
+
         <div class="startup-icon icon-growth">
-            <i class="fas fa-trending-up text-white"></i>
+            <i class="fas fa-balance-scale text-white"></i>
         </div>
-        <div class="metric-value">97.7%</div>
-        <div class="metric-label">Multi-Stage Classification</div>
+
+        <div class="metric-value">43.5%</div>
+
+        <div class="metric-label">
+            Macro F1 Score
+        </div>
+
     </div>
+
+
     <div class="metric-card">
+
         <div class="startup-icon icon-unicorn">
-            <i class="fas fa-crown text-white"></i>
+            <i class="fas fa-database text-white"></i>
         </div>
-        <div class="metric-value">11</div>
-        <div class="metric-label">Key Business Metrics</div>
+
+        <div class="metric-value">34</div>
+
+        <div class="metric-label">
+            Model Features
+        </div>
+
     </div>
+
+
     <div class="metric-card">
+
         <div class="startup-icon icon-exit">
-            <i class="fas fa-trophy text-white"></i>
+            <i class="fas fa-layer-group text-white"></i>
         </div>
-        <div class="metric-value">3</div>
-        <div class="metric-label">Exit Scenarios</div>
+
+        <div class="metric-value">4</div>
+
+        <div class="metric-label">
+            Prediction Classes
+        </div>
+
     </div>
+
 </div>
 
-<!-- Prediction Models -->
+
+<!-- =========================================================
+     MODEL OVERVIEW
+========================================================= -->
+
 <div class="row mb-5">
+
     <div class="col-md-6 mb-4">
+
         <div class="card feature-card startup-card h-100">
+
             <div class="card-body text-center">
+
                 <div class="mb-3">
-                    <i class="fas fa-bullseye fa-3x"></i>
+                    <i class="fas fa-tree fa-3x"></i>
                 </div>
-                <h5 class="card-title">Exit Binary Prediction</h5>
-                <p class="card-text">
-                    Will your startup achieve a successful exit (IPO/Acquisition) or face challenges?
-                </p>
-                <div class="mt-3">
-                    <span class="badge bg-light text-dark">Success vs Challenge</span>
-                    <span class="badge bg-light text-dark">High-Stakes Decision</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 mb-4">
-        <div class="card feature-card growth-card h-100">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-layer-group fa-3x"></i>
-                </div>
-                <h5 class="card-title">Multi-Stage Classification</h5>
-                <p class="card-text">
-                    Detailed prediction: Early Stage, Growth Stage, or Exit-Ready with advanced AI models
-                </p>
-                <div class="mt-3">
-                    <span class="badge bg-light text-dark">3 Growth Stages</span>
-                    <span class="badge bg-light text-dark">Ensemble AI</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Prediction Forms -->
-<div class="row">
-    <div class="col-12">
-        <div class="card feature-card">
-            <div class="card-header bg-transparent">
-                <ul class="nav nav-tabs card-header-tabs" id="predictionTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab">
-                            <i class="fas fa-keyboard me-2"></i>Manual Input
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab">
-                            <i class="fas fa-file-upload me-2"></i>File Upload
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="predictionTabsContent">
-                    <!-- Manual Input Tab -->
-                    <div class="tab-pane fade show active" id="manual" role="tabpanel">
-                        <form action="/predict" method="post" id="predictionForm">
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-cogs me-2"></i>Prediction Type
-                                    </label>
-                                    <select class="form-select" name="task_type" id="taskType" required>
-                                        <option value="multiclass" selected>🚀 Multi-Stage Prediction (Early Stage → Growth → Exit-Ready)</option>
-                                        <option value="binary">🎯 Exit Success Prediction (Success vs Challenge)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Sample Feature Inputs (showing key features) -->
-                            <div class="row mb-4">
-                                <div class="col-12 mb-3">
-                                    <h6 class="text-primary fw-bold">
-                                        <i class="fas fa-chart-bar me-2"></i>Startup Business Metrics
-                                        <small class="text-muted">(Enter your startup's key performance indicators)</small>
-                                    </h6>
-                                </div>
-
-                                {% if metadata and metadata.feature_schema %}
-                                    {% for feature in metadata.feature_schema.feature_names %}
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <label class="form-label">{{ feature.replace('_', ' ').title() }}</label>
-                                            {% set sample_val = metadata.feature_schema.sample_values.get(feature, '') %}
-                                            {% if sample_val is mapping and 'mean' in sample_val %}
-                                                <input type="number" class="form-control" name="{{ feature }}" 
-                                                       placeholder="{{ '%.2f'|format(sample_val.mean) }}" step="any">
-                                                <small class="form-text text-muted">Range: {{ '%.1f'|format(sample_val.min) }} - {{ '%.1f'|format(sample_val.max) }}</small>
-                                            {% elif sample_val is iterable and sample_val is not string %}
-                                                <input type="text" class="form-control" name="{{ feature }}" 
-                                                       placeholder="{{ sample_val[0] if sample_val else 'Enter value' }}">
-                                                <small class="form-text text-muted">Examples: {{ sample_val[:3]|join(', ') if sample_val else 'text value' }}</small>
-                                            {% else %}
-                                                <input type="text" class="form-control" name="{{ feature }}" 
-                                                       placeholder="Enter {{ feature.replace('_', ' ') }}">
-                                            {% endif %}
-                                        </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="col-12">
-                                        <div class="alert alert-info">
-                                            <i class="fas fa-info-circle me-2"></i>
-                                            Feature schema not available. Please load sample data or use the API endpoints.
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <button type="submit" class="btn btn-gradient btn-lg px-5">
-                                        <i class="fas fa-magic me-2"></i>Make Prediction
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- File Upload Tab -->
-                    <div class="tab-pane fade" id="upload" role="tabpanel">
-                        <form action="/upload" method="post" enctype="multipart/form-data">
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-cogs me-2"></i>Prediction Type
-                                    </label>
-                                    <select class="form-select" name="task_type" required>
-                                        <option value="multiclass" selected>Multi-Stage Analysis</option>
-                                        <option value="binary">Exit Success Prediction</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">
-                                        <i class="fas fa-file-csv me-2"></i>Upload CSV File
-                                    </label>
-                                    <input type="file" class="form-control" name="file" accept=".csv" required>
-                                    <small class="form-text text-muted">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Maximum 100 rows for demonstration
-                                    </small>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <button type="submit" class="btn btn-gradient btn-lg px-5">
-                                        <i class="fas fa-upload me-2"></i>Upload & Predict
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- API Information -->
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card feature-card">
-            <div class="card-body">
                 <h5 class="card-title">
-                    <i class="fas fa-api me-2"></i>Developer API Integration
+                    Random Forest Classifier
                 </h5>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="p-3 rounded" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">
-                            <h6>POST /predict-binary</h6>
-                            <p class="mb-1 small">🎯 Exit success prediction API</p>
-                            <code class="small text-light">Success vs Challenge</code>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="p-3 rounded" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;">
-                            <h6>POST /predict-multiclass</h6>
-                            <p class="mb-1 small">🚀 Multi-stage growth analysis</p>
-                            <code class="small text-light">Stage 1, 2, 3 Classification</code>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="p-3 rounded" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white;">
-                            <h6>POST /predict</h6>
-                            <p class="mb-1 small">🧠 Smart AI endpoint</p>
-                            <code class="small text-light">Auto-selects best model</code>
-                        </div>
-                    </div>
+
+                <p class="card-text">
+                    A balanced Random Forest model analyzes startup
+                    characteristics and estimates the most likely outcome.
+                </p>
+
+                <div class="mt-3">
+                    <span class="badge bg-light text-dark">
+                        Ensemble Learning
+                    </span>
+
+                    <span class="badge bg-light text-dark">
+                        Balanced Classes
+                    </span>
                 </div>
-                <div class="text-center mt-3">
-                    <a href="/api/info" target="_blank" class="btn btn-growth">
-                        <i class="fas fa-book me-2"></i>Complete Developer Docs
-                    </a>
-                </div>
+
             </div>
+
         </div>
+
     </div>
+
+
+    <div class="col-md-6 mb-4">
+
+        <div class="card feature-card growth-card h-100">
+
+            <div class="card-body text-center">
+
+                <div class="mb-3">
+                    <i class="fas fa-chart-pie fa-3x"></i>
+                </div>
+
+                <h5 class="card-title">
+                    Multi-Class Prediction
+                </h5>
+
+                <p class="card-text">
+                    The model evaluates four possible startup outcomes
+                    and provides class probabilities and prediction confidence.
+                </p>
+
+                <div class="mt-3">
+
+                    <span class="badge bg-light text-dark">
+                        4 Classes
+                    </span>
+
+                    <span class="badge bg-light text-dark">
+                        Probability Scores
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-{% endblock %}
+
+
+<!-- =========================================================
+     PREDICTION FORM
+========================================================= -->
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card feature-card">
+
+            <div class="card-header bg-transparent">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <h4 class="mb-1">
+                            <i class="fas fa-magic me-2 text-primary"></i>
+                            Startup Prediction
+                        </h4>
+
+                        <small class="text-muted">
+                            Enter startup information to generate a prediction
+                        </small>
+
+                    </div>
+
+                    <span class="badge bg-primary">
+                        34 Features
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <form
+                    action="/predict"
+                    method="post"
+                    id="predictionForm"
+                    novalidate
+                >
+
+                    <!-- =================================================
+                         BASIC STARTUP INFORMATION
+                    ================================================= -->
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+
+                        <div>
+                            <h5>Startup Information</h5>
+
+                            <small>
+                                Basic characteristics of the startup
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-4">
+
+                        <!-- Founded Year -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="founded_at_year"
+                            >
+                                Founded Year
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="founded_at_year"
+                                name="founded_at_year"
+                                placeholder="Example: 2015"
+                                min="1900"
+                                max="2026"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Year the startup was founded
+                            </small>
+
+                        </div>
+
+
+                        <!-- First Funding Year -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="first_funding_at_year"
+                            >
+                                First Funding Year
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="first_funding_at_year"
+                                name="first_funding_at_year"
+                                placeholder="Example: 2016"
+                                min="1900"
+                                max="2026"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Year of first external funding
+                            </small>
+
+                        </div>
+
+
+                        <!-- First Milestone Year -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="first_milestone_at_year"
+                            >
+                                First Milestone Year
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="first_milestone_at_year"
+                                name="first_milestone_at_year"
+                                placeholder="Example: 2017"
+                                min="1900"
+                                max="2026"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Year of first major milestone
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FUNDING & GROWTH
+                    ================================================= -->
+
+                    <div class="section-heading mt-4">
+
+                        <div class="section-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+
+                        <div>
+                            <h5>Funding & Growth</h5>
+
+                            <small>
+                                Financial and development indicators
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-4">
+
+                        <!-- Funding Rounds -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="funding_rounds"
+                            >
+                                Funding Rounds
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="funding_rounds"
+                                name="funding_rounds"
+                                placeholder="Example: 4"
+                                min="0"
+                                step="1"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Total number of funding rounds
+                            </small>
+
+                        </div>
+
+
+                        <!-- Total Funding -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="funding_total_usd"
+                            >
+                                Total Funding (USD)
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="funding_total_usd"
+                                name="funding_total_usd"
+                                placeholder="Example: 5000000"
+                                min="0"
+                                step="any"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Total funding raised in USD
+                            </small>
+
+                        </div>
+
+
+                        <!-- Milestones -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="milestones"
+                            >
+                                Milestones
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="milestones"
+                                name="milestones"
+                                placeholder="Example: 3"
+                                min="0"
+                                step="1"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Number of recorded milestones
+                            </small>
+
+                        </div>
+
+
+                        <!-- Relationships -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="relationships"
+                            >
+                                Relationships
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="relationships"
+                                name="relationships"
+                                placeholder="Example: 15"
+                                min="0"
+                                step="1"
+                                required
+                            >
+
+                            <small class="form-text text-muted">
+                                Business relationships/connections
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         LOCATION
+                    ================================================= -->
+
+                    <div class="section-heading mt-4">
+
+                        <div class="section-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+
+                        <div>
+                            <h5>Location</h5>
+
+                            <small>
+                                Geographic information used by the model
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-4">
+
+                        <!-- Latitude -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="lat"
+                            >
+                                Latitude
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="lat"
+                                name="lat"
+                                placeholder="Example: 37.7749"
+                                step="any"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Longitude -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="lng"
+                            >
+                                Longitude
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="lng"
+                                name="lng"
+                                placeholder="Example: -122.4194"
+                                step="any"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Country -->
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="country"
+                            >
+                                Country
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="country"
+                                name="country"
+                                required
+                            >
+
+                                <option value="">
+                                    Select country
+                                </option>
+
+                                <option value="USA">
+                                    United States
+                                </option>
+
+                                <option value="IND">
+                                    India
+                                </option>
+
+                                <option value="GBR">
+                                    United Kingdom
+                                </option>
+
+                                <option value="CAN">
+                                    Canada
+                                </option>
+
+                                <option value="DEU">
+                                    Germany
+                                </option>
+
+                                <option value="FRA">
+                                    France
+                                </option>
+
+                                <option value="AUS">
+                                    Australia
+                                </option>
+
+                                <option value="ESP">
+                                    Spain
+                                </option>
+
+                                <option value="ISR">
+                                    Israel
+                                </option>
+
+                                <option value="NLD">
+                                    Netherlands
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         INDUSTRY
+                    ================================================= -->
+
+                    <div class="section-heading mt-4">
+
+                        <div class="section-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+
+                        <div>
+                            <h5>Industry</h5>
+
+                            <small>
+                                Select the startup's primary industry
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-4">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label
+                                class="form-label fw-bold"
+                                for="industry"
+                            >
+                                Startup Industry
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="industry"
+                                name="industry"
+                                required
+                            >
+
+                                <option value="">
+                                    Select industry
+                                </option>
+
+                                <option value="software">
+                                    Software
+                                </option>
+
+                                <option value="web">
+                                    Web
+                                </option>
+
+                                <option value="mobile">
+                                    Mobile
+                                </option>
+
+                                <option value="ecommerce">
+                                    E-commerce
+                                </option>
+
+                                <option value="enterprise">
+                                    Enterprise
+                                </option>
+
+                                <option value="games_video">
+                                    Games / Video
+                                </option>
+
+                                <option value="biotech">
+                                    Biotechnology
+                                </option>
+
+                                <option value="advertising">
+                                    Advertising
+                                </option>
+
+                                <option value="consulting">
+                                    Consulting
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <div class="info-panel">
+
+                                <i class="fas fa-info-circle me-2"></i>
+
+                                <strong>How it works</strong>
+
+                                <p class="mb-0 mt-1">
+                                    Industry and country selections are
+                                    converted into the encoded features
+                                    expected by the trained model.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         HIDDEN MODEL FEATURES
+                    ================================================= -->
+
+                    <!-- Date features are retained for compatibility -->
+
+                    <input
+                        type="hidden"
+                        name="founded_at"
+                        id="founded_at"
+                        value="0"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="first_funding_at"
+                        id="first_funding_at"
+                        value="0"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="first_milestone_at"
+                        id="first_milestone_at"
+                        value="0"
+                    >
+
+
+                    <!-- =================================================
+                         PREDICTION ACTIONS
+                    ================================================= -->
+
+                    <div class="prediction-action-panel mt-4">
+
+                        <div class="row align-items-center">
+
+                            <div class="col-md-7">
+
+                                <h5 class="mb-1">
+                                    <i class="fas fa-brain me-2"></i>
+                                    Ready to analyze?
+                                </h5>
+
+                                <small>
+                                    The Random Forest model will evaluate
+                                    your startup profile and return the
+                                    predicted outcome with confidence scores.
+                                </small>
+
+                            </div>
+
+
+                            <div class="col-md-5 text-md-end mt-3 mt-md-0">
+
+                                <button
+                                    type="button"
+                                    id="sampleBtn"
+                                    class="btn btn-outline-secondary me-2"
+                                >
+                                    <i class="fas fa-flask me-1"></i>
+                                    Sample
+                                </button>
+
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-startup"
+                                    id="predictBtn"
+                                >
+                                    <i class="fas fa-magic me-2"></i>
+                                    Make Prediction
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Validation message -->
+
+                    <div
+                        id="validationMessage"
+                        class="alert alert-danger mt-4 d-none"
+                    >
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+
+                        <span id="validationText">
+                            Please complete all required fields.
+                        </span>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PREDICTION CLASSES
+========================================================= -->
+
+<div class="row mt-5">
+
+    <div class="col-12">
+
+        <div class="card feature-card">
+
+            <div class="card-body">
+
+                <div class="text-center mb-4">
+
+                    <h4>
+                        <i class="fas fa-layer-group text-primary me-2"></i>
+                        Prediction Outcomes
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        The model classifies startups into four outcome categories.
+                    </p>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="outcome-card outcome-danger">
+
+                            <div class="outcome-number">
+                                0
+                            </div>
+
+                            <h6>
+                                Closed / Failed
+                            </h6>
+
+                            <small>
+                                Startup is classified as closed or unsuccessful.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="outcome-card outcome-info">
+
+                            <div class="outcome-number">
+                                1
+                            </div>
+
+                            <h6>
+                                Operating
+                            </h6>
+
+                            <small>
+                                Startup is classified as currently operating.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="outcome-card outcome-warning">
+
+                            <div class="outcome-number">
+                                2
+                            </div>
+
+                            <h6>
+                                Acquired
+                            </h6>
+
+                            <small>
+                                Startup is classified as acquired.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <div class="outcome-card outcome-success">
+
+                            <div class="outcome-number">
+                                3
+                            </div>
+
+                            <h6>
+                                Successful / Active
+                            </h6>
+
+                            <small>
+                                Startup is classified as successful or active.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     DEVELOPER API
+========================================================= -->
+
+<div class="row mt-5">
+
+    <div class="col-12">
+
+        <div class="card feature-card">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-8">
+
+                        <h5 class="card-title">
+
+                            <i class="fas fa-code me-2 text-primary"></i>
+
+                            Developer API
+
+                        </h5>
+
+                        <p class="text-muted mb-2">
+
+                            Integrate startup prediction into your own
+                            applications using the REST prediction endpoint.
+
+                        </p>
+
+                        <code>
+                            POST /predict
+                        </code>
+
+                        <span class="badge bg-success ms-2">
+                            JSON supported
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                        <a
+                            href="/api/info"
+                            target="_blank"
+                            class="btn btn-growth"
+                        >
+
+                            <i class="fas fa-book me-2"></i>
+
+                            API Documentation
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PAGE-SPECIFIC STYLES
+========================================================= -->
+
+<style>
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 50px;
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    margin: 20px 0 25px;
+    border-radius: 16px;
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.08),
+        rgba(139, 92, 246, 0.08)
+    );
+}
+
+.section-heading h5 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.section-heading small {
+    color: #64748b;
+}
+
+.section-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #8b5cf6
+    );
+    color: white;
+}
+
+.info-panel {
+    height: 100%;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(59, 130, 246, 0.08);
+    border-left: 4px solid #3b82f6;
+    color: #475569;
+}
+
+.info-panel strong {
+    color: #1e293b;
+}
+
+.prediction-action-panel {
+    padding: 24px;
+    border-radius: 18px;
+    background: linear-gradient(
+        135deg,
+        #1e293b,
+        #334155
+    );
+    color: white;
+}
+
+.prediction-action-panel small {
+    color: #cbd5e1;
+}
+
+.outcome-card {
+    height: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: #f8fafc;
+}
+
+.outcome-number {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    background: #e2e8f0;
+}
+
+.outcome-card h6 {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.outcome-card small {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.outcome-danger {
+    border-top: 4px solid #ef4444;
+}
+
+.outcome-info {
+    border-top: 4px solid #3b82f6;
+}
+
+.outcome-warning {
+    border-top: 4px solid #f59e0b;
+}
+
+.outcome-success {
+    border-top: 4px solid #10b981;
+}
+
+</style>
+
+
+<!-- =========================================================
+     PAGE JAVASCRIPT
+========================================================= -->
 
 {% block scripts %}
+
 <script>
-// Sample data functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Add sample data button
-    const form = document.getElementById('predictionForm');
-    if (form) {
-        const sampleBtn = document.createElement('button');
-        sampleBtn.type = 'button';
-        sampleBtn.className = 'btn btn-outline-secondary btn-sm me-2';
-        sampleBtn.innerHTML = '<i class="fas fa-flask me-1"></i>Fill Sample Data';
-        
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.parentNode.insertBefore(sampleBtn, submitBtn);
-        
-        sampleBtn.addEventListener('click', function() {
-            // Fill with sample data
-            const inputs = form.querySelectorAll('input[type="number"], input[type="text"]');
-            inputs.forEach((input, index) => {
-                if (input.type === 'number') {
-                    input.value = Math.floor(Math.random() * 1000) + 1;
-                } else {
-                    input.value = 'sample_value_' + (index + 1);
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("predictionForm");
+
+    const sampleBtn = document.getElementById("sampleBtn");
+
+    const validationMessage =
+        document.getElementById("validationMessage");
+
+    const validationText =
+        document.getElementById("validationText");
+
+    const predictBtn =
+        document.getElementById("predictBtn");
+
+
+    // --------------------------------------------------
+    // Sample startup data
+    // --------------------------------------------------
+
+    sampleBtn.addEventListener("click", function () {
+
+        document.getElementById("founded_at_year").value = "2015";
+
+        document.getElementById("first_funding_at_year").value = "2016";
+
+        document.getElementById("first_milestone_at_year").value = "2017";
+
+        document.getElementById("funding_rounds").value = "4";
+
+        document.getElementById("funding_total_usd").value = "5000000";
+
+        document.getElementById("milestones").value = "3";
+
+        document.getElementById("relationships").value = "15";
+
+        document.getElementById("lat").value = "37.7749";
+
+        document.getElementById("lng").value = "-122.4194";
+
+        document.getElementById("country").value = "USA";
+
+        document.getElementById("industry").value = "software";
+
+
+        validationMessage.classList.add("d-none");
+
+
+        sampleBtn.innerHTML =
+            '<i class="fas fa-check me-1"></i> Sample Loaded';
+
+
+        setTimeout(function () {
+
+            sampleBtn.innerHTML =
+                '<i class="fas fa-flask me-1"></i> Sample';
+
+        }, 2000);
+
+    });
+
+
+    // --------------------------------------------------
+    // Form validation
+    // --------------------------------------------------
+
+    form.addEventListener("submit", function (event) {
+
+        const requiredFields =
+            form.querySelectorAll("[required]");
+
+        let firstInvalid = null;
+
+
+        requiredFields.forEach(function (field) {
+
+            if (!field.value.trim()) {
+
+                field.classList.add("is-invalid");
+
+                if (!firstInvalid) {
+                    firstInvalid = field;
                 }
-            });
-            
-            // Show success message
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-success alert-dismissible fade show mt-3';
-            alert.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i>
-                Sample data filled! You can now make a prediction.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            form.insertBefore(alert, form.firstChild);
-            
-            // Auto-dismiss after 3 seconds
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.remove();
-                }
-            }, 3000);
+
+            } else {
+
+                field.classList.remove("is-invalid");
+
+            }
+
         });
-    }
+
+
+        if (firstInvalid) {
+
+            event.preventDefault();
+
+
+            validationText.textContent =
+                "Please complete all required startup information before making a prediction.";
+
+
+            validationMessage.classList.remove("d-none");
+
+
+            firstInvalid.focus();
+
+
+            return;
+
+        }
+
+
+        validationMessage.classList.add("d-none");
+
+
+        predictBtn.disabled = true;
+
+        predictBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing Startup...';
+
+    });
+
+
+    // --------------------------------------------------
+    // Remove validation styling while typing
+    // --------------------------------------------------
+
+    form.querySelectorAll("input, select").forEach(function (field) {
+
+        field.addEventListener("input", function () {
+
+            if (field.value.trim()) {
+
+                field.classList.remove("is-invalid");
+
+            }
+
+        });
+
+        field.addEventListener("change", function () {
+
+            if (field.value.trim()) {
+
+                field.classList.remove("is-invalid");
+
+            }
+
+        });
+
+    });
+
 });
+
 </script>
+
+{% endblock %}
+
 {% endblock %}
