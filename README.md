@@ -69,3 +69,7 @@ Maximum Depth      : 15
 Minimum Samples Leaf : 2
 Class Weight       : Balanced
 Parallel Jobs      : 2
+## Project Attribution
+
+Original project author: saivyshnavi30
+Repository owner and maintainer: Guguloth-Devaharshini
